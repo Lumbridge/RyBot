@@ -92,13 +92,13 @@ namespace RyBot.Commands
             var apiKey = config["GoogleCustomSearchApiKey"];
             var contextCode = config["GoogleCustomSearchEngineContextCode"];
             
-            var imageSearchResult = await ScrapeHelper.GetImageSearchResult(term, apiKey, contextCode);
+            var imageSearchResult = await JsonHelper.GetImageSearchResult(term, apiKey, contextCode);
             var imageUrls = imageSearchResult.SearchResults;
             var searchTitle = imageSearchResult.Queries.Request.First().Title;
             var counter = imageSearchResult.SearchResults.Count;
             while (counter < 30 && counter % 10 == 0)
             {
-                imageSearchResult = await ScrapeHelper.GetImageSearchResult(term, apiKey, contextCode, counter + 1);
+                imageSearchResult = await JsonHelper.GetImageSearchResult(term, apiKey, contextCode, counter + 1);
                 if (imageSearchResult.SearchResults.Count > 0) {
                     imageUrls.AddRange(imageSearchResult.SearchResults);
                 }
