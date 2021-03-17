@@ -364,6 +364,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-#appsettings.json
+# Rybot stuff
+RyBot/Program.cs
+RyBot/appsettings.json
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio
