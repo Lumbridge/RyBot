@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web;
-using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using DSharpPlus.Interactivity;
@@ -16,6 +9,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using RyBot.Helpers;
 using RyBot.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace RyBot.Commands
 {
@@ -211,12 +210,12 @@ namespace RyBot.Commands
                 var at = result.At;
                 var tokenthumb = result.Tokenthumb;
                 
-                var previewUrl = $"https://media.trace.moe/video/{anilist_id}/{Uri.EscapeUriString(filename)}?t={at}&token={tokenthumb}";
+                var previewUrl = $"https://media.trace.moe/video/{anilist_id}/{Uri.EscapeDataString(filename)}?t={at}&token={tokenthumb}";
 
                 var preview = await new HttpClient().GetStreamAsync(previewUrl);
 
                 await new DiscordMessageBuilder()
-                    .WithFile("preview_" + filename, preview)
+                    .AddFile("preview_" + filename, preview)
                     .WithEmbed(new DiscordEmbedBuilder()
                         .WithColor(new DiscordColor(0, 255, 0))
                         .WithTitle("Sauce Result")

@@ -13,8 +13,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
+using DSharpPlus.SlashCommands;
 using RyBot.Helpers;
 using Serilog;
+using System.Reflection;
 
 namespace RyBot
 {
@@ -44,7 +46,7 @@ namespace RyBot
             var token = config["DiscordBotApiToken"];
 
             // check for valid token
-            if (string.IsNullOrEmpty(token) || token.Length != 59)
+            if (string.IsNullOrEmpty(token) || token.Length != 70)
             {
                 throw new Exception("Error, bot token must be set properly in appsettings.json.");
             }
@@ -53,7 +55,8 @@ namespace RyBot
             var discord = new DiscordClient(new DiscordConfiguration
             {
                 Token = token,
-                TokenType = TokenType.Bot
+                TokenType = TokenType.Bot,
+                Intents = DiscordIntents.All
             });
 
             // setup command interactivity
@@ -73,7 +76,12 @@ namespace RyBot
             }
 
             // get command modules
-            var commands = discord.UseCommandsNext(new CommandsNextConfiguration { StringPrefixes = stringPrefixes, Services = services.BuildServiceProvider() });
+            var commands = discord.UseCommandsNext(
+                new CommandsNextConfiguration
+                {
+                    StringPrefixes = stringPrefixes,
+                    Services = services.BuildServiceProvider()
+                });
 
             // register commands
             commands.RegisterCommands<MainModule>();
@@ -84,6 +92,13 @@ namespace RyBot
             {
                 Console.WriteLine($"Registering command: {command.Key}");
             }
+
+            var slashCommands = discord.UseSlashCommands();
+
+            slashCommands.RegisterCommands<SlashCommands>(1067228243834445855);
+
+            // register slash commands
+            Console.WriteLine($"Found {slashCommands.RegisteredCommands.Count} slash commands to register.");
 
             // connect to the discord gateway
             await discord.ConnectAsync();

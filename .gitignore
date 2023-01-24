@@ -369,3 +369,4 @@ RyBot/Program.cs
 RyBot/appsettings.json
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio
+/RyBot/appsettings.json
